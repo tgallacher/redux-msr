@@ -11,7 +11,7 @@
  * @param {*} config
  * @param {*} defaultState
  */
-const combineSubReducers = (actionConfig: ActionConfig, initialState: any) => (prevState: ?Object, action: FluxStandardAction): any => {
+const mergeSubReducers = (actionConfig: ActionConfig, initialState: any) => (prevState: ?Object, action: FluxStandardAction): any => {
   if ('default' in actionConfig) {
     return actionConfig['default'] || initialState;
   } else if (!(action.type in actionConfig)) {
@@ -24,11 +24,14 @@ const combineSubReducers = (actionConfig: ActionConfig, initialState: any) => (p
 };
 
 /**
+ * Helper method to return the previous reducer state.
+ * This should be used for action types where you would like
+ * to simply return the previous state, such as the default action response.
  *
  * @param {*} prevState
  */
 const returnPrevState = <T>(prevState: T): T => prevState;
 
-module.exports = combineSubReducers;
-module.exports.combineSubReducers = combineSubReducers;
+module.exports = mergeSubReducers;
+module.exports.mergeSubReducers = mergeSubReducers;
 module.exports.returnPrevState = returnPrevState;

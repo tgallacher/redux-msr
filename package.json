@@ -1,5 +1,5 @@
 {
-  "name": "redux-csr",
+  "name": "redux-msr",
   "version": "0.1.0",
   "description": "Combine sub reducers wihtout splitting the Redux store",
   "main": "index.js",
