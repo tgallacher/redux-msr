@@ -2,6 +2,11 @@
 /* global ActionConfig, FluxStandardAction */
 
 /**
+ * Main library entrypoint.
+ * Combine several sub-reducers to construct a single resource
+ * reducer. Each sub reducer will receive the same full Redux store
+ * slice as the resulting main reducer. This is unlike the behaviour and
+ * intention of Redux's `combineReducers` API method.
  *
  * @param {*} config
  * @param {*} defaultState
