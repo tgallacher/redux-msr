@@ -8,8 +8,8 @@
  * slice as the resulting main reducer. This is unlike the behaviour and
  * intention of Redux's `combineReducers` API method.
  *
- * @param {*} config
- * @param {*} defaultState
+ * @param {ActionConfig} config Action type & reducer configuration object
+ * @param {any} initialState The initial state to return
  */
 const mergeSubReducers = (actionConfig: ActionConfig, initialState: any) => (prevState: ?Object, action: FluxStandardAction): any => {
   if ('default' in actionConfig) {
@@ -28,7 +28,7 @@ const mergeSubReducers = (actionConfig: ActionConfig, initialState: any) => (pre
  * This should be used for action types where you would like
  * to simply return the previous state, such as the default action response.
  *
- * @param {*} prevState
+ * @param {T} prevState The previous reducer state
  */
 const returnPrevState = <T>(prevState: T): T => prevState;
 
