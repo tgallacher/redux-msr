@@ -1,7 +1,7 @@
 {
   "name": "redux-msr",
   "version": "0.1.0",
-  "description": "Combine sub reducers wihtout splitting the Redux store",
+  "description": "Merge sub reducers wihtout splitting the Redux store",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -11,7 +11,10 @@
     "lint": "semistandard --verbose | snazzy",
     "lint:fix": "semistandard --fix"
   },
-  "keywords": [],
+  "keywords": [
+    "redux",
+    "reducer"
+  ],
   "author": "Tom Gallacher <thomas.gallacher@gmail.com>",
   "license": "MIT",
   "devDependencies": {
