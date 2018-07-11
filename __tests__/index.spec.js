@@ -5,7 +5,7 @@ test('returns the inital state when prev state is undefined', () => {
   const initState = { foobar: 3 };
   const actionConfig = {};
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(undefined, { type: '@@test' });
 
   expect(result).toBeObject();
@@ -18,7 +18,7 @@ test('returns given value as default action type when specified in action config
     default: { foobar: 10 }
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(initState, { type: '@@test' });
 
   expect(result).toBeObject();
@@ -30,7 +30,7 @@ test('returns prev state as default action type when not specified in action con
   const prevState = { foobar: 22 };
   const actionConfig = {};
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(prevState, { type: '@@test' });
 
   expect(result).toBeObject();
@@ -44,7 +44,7 @@ test('returns non function types as-is', () => {
     [actionType]: [1, 2]
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(initState, { type: actionType });
 
   expect(result).toBeObject();
@@ -61,7 +61,7 @@ test('calls supplied reducer with the correct arguments', () => {
     [actionType]: subReducer
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   reducer(initState, action);
 
   expect(subReducer).toHaveBeenCalledTimes(1);
@@ -77,7 +77,7 @@ test('returns the correct state when type is a number', () => {
     [actionType]: subReducer
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(initState, { type: actionType });
 
   expect(result).toBeNumber();
@@ -94,7 +94,7 @@ test('returns the correct state when type is an object', () => {
     [actionType]: subReducer
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(initState, { type: actionType });
 
   expect(result).toBeObject();
@@ -111,7 +111,7 @@ test('returns the correct state when type is an array', () => {
     [actionType]: subReducer
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(initState, { type: actionType });
 
   expect(result).toBeArray();
@@ -127,7 +127,7 @@ test('doesn\'t mutate state when an unrecognised type is dispatched', () => {
     [actionType]: subReducer
   };
 
-  const reducer = combineSubReducers(actionConfig, initState);
+  const reducer = combineSubReducers(initState, actionConfig);
   const result = reducer(initState, { type: '@@NOPE' });
 
   expect(result).toBeArray();

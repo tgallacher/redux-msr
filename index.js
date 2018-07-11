@@ -1,4 +1,5 @@
 // @flow
+/** @todo Fix linting with SemiStandardJS as it should pull Flowtypes in automatically... */
 /* global ActionConfig, FluxStandardAction */
 
 /**
@@ -8,10 +9,10 @@
  * slice as the resulting main reducer. This is unlike the behaviour and
  * intention of Redux's `combineReducers` API method.
  *
- * @param {ActionConfig} config Action type & reducer configuration object
  * @param {any} initialState The initial state to return
+ * @param {ActionConfig} config Action type & reducer configuration object
  */
-const mergeSubReducers = (actionConfig: ActionConfig, initialState: any) => (prevState: ?Object, action: FluxStandardAction): any => {
+const mergeSubReducers = (initialState: any, actionConfig: ActionConfig) => (prevState: ?Object, action: FluxStandardAction): any => {
   if ('default' in actionConfig) {
     return actionConfig['default'] || initialState;
   } else if (!(action.type in actionConfig)) {
