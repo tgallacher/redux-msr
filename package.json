@@ -18,6 +18,10 @@
     "redux",
     "reducer"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tgallacher/redux-msr.git"
+  },
   "author": "Tom Gallacher <thomas.gallacher@gmail.com>",
   "license": "MIT",
   "devDependencies": {
