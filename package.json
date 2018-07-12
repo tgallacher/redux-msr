@@ -2,7 +2,7 @@
   "name": "redux-msr",
   "version": "0.0.0",
   "description": "Merge sub reducers wihtout splitting the Redux store",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "test:dev": "npm run-script test -- --watch",
