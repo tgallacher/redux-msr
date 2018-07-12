@@ -1,6 +1,6 @@
 {
   "name": "redux-msr",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Merge sub reducers wihtout splitting the Redux store",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,9 @@
     "flow": "flow check",
     "flow:install": "flow-typed install",
     "lint": "semistandard --verbose | snazzy",
-    "lint:fix": "semistandard --fix"
+    "lint:fix": "semistandard --fix",
+    "preversion": "npm run lint && npm test",
+    "prepublishOnly": "npm run preversion && npm run build"
   },
   "keywords": [
     "redux",
@@ -36,6 +38,9 @@
     "snazzy": "^7.1.1"
   },
   "dependencies": {},
+  "files": [
+    "dist/"
+  ],
   "jest": {
     "setupTestFrameworkScriptFile": "jest-extended"
   },
