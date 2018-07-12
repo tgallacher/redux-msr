@@ -4,6 +4,7 @@
   "description": "Merge sub reducers wihtout splitting the Redux store",
   "main": "dist/index.js",
   "scripts": {
+    "build": "parcel build index.js",
     "test": "jest",
     "test:dev": "npm run-script test -- --watch",
     "flow": "flow check",
