@@ -1,0 +1,11 @@
+node_modules/
+flow-typed/
+__tests__/
+.vscode/
+.cache/
+src/
+
+.flowconfig
+webpack*
+.babelrc
+.browserslistrc
