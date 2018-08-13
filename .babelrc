@@ -2,13 +2,12 @@
   "presets": [
     ["env", {
       "modules": false,
+      "useBuiltIns": true,
       "targets": {
-        "browsers": ["defaults"]
+        "browsers": [">5%"]
       }
-    }]
-  ],
-  "plugins": [
-    "transform-flow-strip-types"
+    }],
+    "flow"
   ],
   "env": {
     "test": {

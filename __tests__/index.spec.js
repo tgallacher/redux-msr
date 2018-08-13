@@ -1,5 +1,5 @@
 /* global test, expect, jest */
-const combineSubReducers = require('../index');
+const combineSubReducers = require('../src/index');
 
 test('returns the inital state when prev state is undefined', () => {
   const initState = { foobar: 3 };

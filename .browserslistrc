@@ -1,3 +1,8 @@
 # Use Browserslist defaults:
 # see https://www.npmjs.com/package/browserslist
+#
+# Note this isn't yet supported by BabelJS yet. It has to be inside
+# the .babelrc file.
+#
+# @see: ?
 defaults
