@@ -133,3 +133,67 @@ test('doesn\'t mutate state when an unrecognised type is dispatched', () => {
   expect(result).toBeArray();
   expect(result).toStrictEqual(initState);
 });
+
+describe('returns the correct merged state when given a list of reducers', () => {
+  const fooReducer = (prevState, action) => {
+    const { payload: { foo } = {} } = action;
+
+    switch (action.type) {
+      case mockAction.type:
+        return {
+          ...prevState,
+          foo: foo || prevState.foo
+        };
+
+      default:
+        return prevState;
+    }
+  }
+
+  const barReducer = (prevState, action) => {
+    const { payload: { bar } = {} } = action;
+
+    switch (action.type) {
+      case mockAction.type:
+        return {
+          ...prevState,
+          bar: bar || prevState.bar
+        };
+
+      default:
+        return prevState;
+    }
+  }
+
+  test('and a single reducer is triggered', () => {
+    const initState = { foo: 1, bar: 'baz' };
+    const mockAction = { type: 'test.action', payload: { foo: 4 } };
+    const expectedState = { foo: 4, bar: 'baz' };
+
+    const reducer = combineSubReducers(initState, [
+      fooReducer,
+      barReducer
+    ]);
+
+    const newState = reducer(initState, mockAction);
+
+    expect(newState).toBeObject();
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test('and multiple reducers are triggered', () => {
+    const initState = { foo: 1, bar: 'baz' };
+    const mockAction = { type: 'test.action', payload: { foo: 10, baz: 'world' } };
+    const expectedState = { foo: 10, bar: 'world' };
+
+    const reducer = combineSubReducers(initState, [
+      fooReducer,
+      barReducer
+    ]);
+
+    const newState = reducer(initState, mockAction);
+
+    expect(newState).toBeObject();
+    expect(newState).toStrictEqual(expectedState);
+  });
+});
