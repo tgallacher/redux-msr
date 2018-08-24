@@ -1,6 +1,6 @@
 // @flow
 /**
- * @todo Fix linting with SemiStandardJS as it should pull Flowtypes in automatically...
+ * @todo Fix linting with SemiStandardJS as it should pull Flowtyping in automatically...
  * @see https://github.com/standard/standard/issues/1045
  * */
 /* global ActionConfig, FluxStandardAction */
@@ -9,8 +9,7 @@
  * Main library entrypoint.
  * Combine several sub-reducers to construct a single resource
  * reducer. Each sub reducer will receive the same full Redux store
- * slice as the resulting main reducer. This is unlike the behaviour and
- * intention of Redux's `combineReducers` API method.
+ * slice as the resulting main reducer.
  *
  * @param {any} initialState The initial state to return
  * @param {ActionConfig} config Action type & reducer configuration object
