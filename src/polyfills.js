@@ -4,4 +4,4 @@
 //
 // NB: currently (BabelJS v6.x), this will also include polyfills
 // which may not be required for this bundle.
-require('babel-polyfill');
+require('babel-polyfill'); // eslint-disable-line

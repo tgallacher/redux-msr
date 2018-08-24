@@ -1,9 +1,4 @@
 // @flow
-/**
- * @todo Fix linting with SemiStandardJS as it should pull Flowtyping in automatically...
- * @see https://github.com/standard/standard/issues/1045
- * */
-/* global ActionConfig, FluxStandardAction */
 
 /**
  * Main library entrypoint.
@@ -14,17 +9,21 @@
  * @param {any} initialState The initial state to return
  * @param {ActionConfig} config Action type & reducer configuration object
  */
-const mergeSubReducers = (initialState: any, actionConfig: ActionConfig) => (prevState: ?Object, action: FluxStandardAction): any => {
-  if ('default' in actionConfig) {
-    return actionConfig['default'] || initialState;
-  } else if (!(action.type in actionConfig)) {
-    return prevState || initialState;
-  }
+const mergeSubReducers = <T>(
+  initialState: T,
+  actionConfig: ActionConfig,
+) => (prevState: ?T, action: FluxStandardAction): T => {
+    if ('default' in actionConfig) {
+      return actionConfig.default || initialState;
+    }
+    if (! (action.type in actionConfig)) {
+      return prevState || initialState;
+    }
 
-  return (typeof actionConfig[action.type] === 'function')
-    ? actionConfig[action.type](prevState, action)
-    : actionConfig[action.type];
-};
+    return (typeof actionConfig[action.type] === 'function')
+      ? actionConfig[action.type](prevState, action)
+      : actionConfig[action.type];
+  };
 
 /**
  * Helper method to return the previous reducer state.

@@ -1,0 +1,43 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "plugins": [
+    "flowtype"
+  ],
+  "rules": {
+    "indent": ["error", 2],
+    "no-confusing-arrow": "off",
+    "space-unary-ops": [
+      "error", {
+        "overrides": {
+          "!": true,
+          "!!": true
+        }
+      }
+    ],
+    "max-len": [
+      "error", {
+        "code": 120
+      }
+    ],
+    "padding-line-between-statements": [
+      "error",
+      {"blankLine": "always", "prev": "*", "next": "return"},
+      {"blankLine": "always", "prev": ["const", "let", "var"], "next": "*"},
+      {"blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"]}
+    ]
+  }
+}
