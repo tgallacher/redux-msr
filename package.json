@@ -23,7 +23,7 @@
     "type": "git",
     "url": "https://github.com/tgallacher/redux-msr.git"
   },
-  "author": "Tom Gallacher <thomas.gallacher@gmail.com>",
+  "author": "Tom Gallacher <tgallacher@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
     "ajv": "^6.5.2",
