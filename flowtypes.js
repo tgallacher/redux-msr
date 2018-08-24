@@ -13,13 +13,14 @@ declare type FluxStandardAction = {
 };
 
 /**
- * Action type configuration.
+ * Config setup for allocating reducers.
+ *
  * Keys correspond to the action type, and the value the
  * reducer/value that should be used when that given action
  * type is dispatched.
  *
  * @type {object}
  */
-declare type ActionConfig = {
+declare type ReducerConfig = {
   [actionType: string]: any
 };

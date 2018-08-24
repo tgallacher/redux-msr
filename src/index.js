@@ -11,7 +11,7 @@
  */
 const mergeSubReducers = <T>(
   initialState: T,
-  actionConfig: ActionConfig,
+  actionConfig: ReducerConfig,
 ) => (prevState: ?T, action: FluxStandardAction): T => {
     if ('default' in actionConfig) {
       return actionConfig.default || initialState;
