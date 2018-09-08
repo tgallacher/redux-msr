@@ -21,6 +21,6 @@ declare type FluxStandardAction = {
  *
  * @type {object}
  */
-declare type ReducerConfig = {
-  [actionType: string]: any
-};
+declare type ReducerConfig =
+  | { [actionType: string]: Reducer }
+  | Reducer[];

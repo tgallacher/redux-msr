@@ -7,22 +7,41 @@
  * slice as the resulting main reducer.
  *
  * @param {any} initialState The initial state to return
- * @param {ActionConfig} config Action type & reducer configuration object
+ * @param {ActionConfig | Array<Function>} config Action type & reducer configuration object
  */
 const mergeSubReducers = <T>(
   initialState: T,
-  actionConfig: ReducerConfig,
+  reducers: ReducerConfig,
 ) => (prevState: ?T, action: FluxStandardAction): T => {
-    if ('default' in actionConfig) {
-      return actionConfig.default || initialState;
+  const _newState = reducer(prevState, action);
+
+  if (reducers instanceof Array) {
+    return reducers.reduce((newState, reducer) => {
+      switch (typeof newState) {
+        case 'array':
+          return newState.concat();
+        case 'object':
+          return Object.assign({}, newState, reducer(prevState, action));
+
+
+        default:
+          return newState;
+      }
+    }, prevState);
+  }
+
+
+
+    if ('default' in reducers) {
+      return reducers.default || initialState;
     }
-    if (! (action.type in actionConfig)) {
+    if (! (action.type in reducers)) {
       return prevState || initialState;
     }
 
-    return (typeof actionConfig[action.type] === 'function')
-      ? actionConfig[action.type](prevState, action)
-      : actionConfig[action.type];
+    return (typeof reducers[action.type] === 'function')
+      ? reducers[action.type](prevState, action)
+      : reducers[action.type];
   };
 
 /**
