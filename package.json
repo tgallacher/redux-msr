@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.prod.js",
     "build:dev": "webpack --config ./webpack.dev.js",
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "test:dev": "npm run-script test -- --watch",
     "flow": "flow check",
     "flow:install": "flow-typed install",
