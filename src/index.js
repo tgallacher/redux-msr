@@ -1,5 +1,45 @@
 // @flow
 
+// eslint-disable-next-line
+const handleReducerArray = <T>(
+  initialState: T,
+  reducerConfig: Reducer[],
+  prevState: ?T,
+  action: FluxStandardAction,
+): T => {
+  return reducerConfig.reduce((newState, reducer) => {
+    switch (typeof newState) {
+    case 'array':
+      return newState.concat();
+    case 'object':
+      return Object.assign({}, newState, reducer(prevState, action));
+
+
+    default:
+      return newState;
+    }
+  }, prevState);
+}
+
+// eslint-disable-next-line
+const handleReducerObject = <T>(
+  initialState: T,
+  reducerConfig: ReducerConfig,
+  prevState: ?T,
+  action: FluxStandardAction,
+): T => {
+  if ('default' in reducerConfig) {
+    return reducerConfig.default || initialState;
+  }
+  if (! (action.type in reducerConfig)) {
+    return prevState || initialState;
+  }
+
+  return (typeof reducerConfig[action.type] === 'function')
+    ? reducerConfig[action.type](prevState, action)
+    : reducerConfig[action.type];
+};
+
 /**
  * Main library entrypoint.
  * Combine several sub-reducers to construct a single resource
@@ -7,41 +47,13 @@
  * slice as the resulting main reducer.
  *
  * @param {any} initialState The initial state to return
- * @param {ActionConfig | Array<Function>} config Action type & reducer configuration object
+ * @param {ReducerConfig} reducerConfig Action type & reducer configuration object
  */
-const mergeSubReducers = <T>(
-  initialState: T,
-  reducers: ReducerConfig,
-) => (prevState: ?T, action: FluxStandardAction): T => {
-  const _newState = reducer(prevState, action);
-
-  if (reducers instanceof Array) {
-    return reducers.reduce((newState, reducer) => {
-      switch (typeof newState) {
-        case 'array':
-          return newState.concat();
-        case 'object':
-          return Object.assign({}, newState, reducer(prevState, action));
-
-
-        default:
-          return newState;
-      }
-    }, prevState);
-  }
-
-
-
-    if ('default' in reducers) {
-      return reducers.default || initialState;
-    }
-    if (! (action.type in reducers)) {
-      return prevState || initialState;
-    }
-
-    return (typeof reducers[action.type] === 'function')
-      ? reducers[action.type](prevState, action)
-      : reducers[action.type];
+export const mergeSubReducers = <T>(initialState: T, reducerConfig: ReducerConfig) =>
+  (prevState: ?T, action: FluxStandardAction): T => { // eslint-disable-line
+    return Array.isArray(reducerConfig)
+      ? handleReducerArray(initialState, reducerConfig, prevState, action)
+      : handleReducerObject(initialState, reducerConfig, prevState, action);
   };
 
 /**
@@ -51,8 +63,6 @@ const mergeSubReducers = <T>(
  *
  * @param {T} prevState The previous reducer state
  */
-const returnPrevState = <T>(prevState: T): T => prevState;
+export const returnPrevState = <T>(prevState: T): T => prevState;
 
-module.exports = mergeSubReducers;
-module.exports.mergeSubReducers = mergeSubReducers;
-module.exports.returnPrevState = returnPrevState;
+export default mergeSubReducers;
