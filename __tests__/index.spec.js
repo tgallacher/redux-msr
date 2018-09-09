@@ -1,4 +1,4 @@
-const combineSubReducers = require('../src/index');
+import combineSubReducers from '../src/index';
 
 describe('Reducer config is', () => {
   describe('an object type', () => {
@@ -138,12 +138,13 @@ describe('Reducer config is', () => {
   });
 
   describe('an array type', () => {
-
+    it.skip('returns the inital state when prev state is undefined', () => {});
+    it.skip('returns the prev state when the dispatched action type is not specified in reducer config', () => {});
+    it.skip('returns the correct state when typeof the initial state is a number', () => {});
+    it.skip('returns the correct state when typeof the initial state is an object', () => {});
+    it.skip('returns the correct state when the typeof the initial state is an array', () => {});
   });
 });
-
-
-
 
 describe('returns the correct merged state when given a list of reducers', () => {
   const fooReducer = (prevState, action) => {
