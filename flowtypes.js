@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable */
 
 /**
  * Flux Standard Action spec
@@ -12,6 +11,14 @@ declare type FluxStandardAction = {
   meta?: any
 };
 
+declare type ReducerObjectConfig<S> = {
+  [actionType: string]: S | Reducer<S, FluxStandardAction>,
+  default?: S | Reducer<S, FluxStandardAction>,
+};
+
+declare type ReducerArrayConfig<S> = Reducer<S, FluxStandardAction>[];
+
+
 /**
  * Config setup for allocating reducers.
  *
@@ -21,6 +28,6 @@ declare type FluxStandardAction = {
  *
  * @type {object}
  */
-declare type ReducerConfig =
-  | { [actionType: string]: Reducer }
-  | Reducer[];
+declare type ReducerConfig<S> =
+  | ReducerObjectConfig<S>
+  | ReducerObjectConfig<S>;
