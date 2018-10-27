@@ -138,74 +138,118 @@ describe('Reducer config is', () => {
   });
 
   describe('an array type', () => {
-    it.skip('returns the inital state when prev state is undefined', () => {});
-    it.skip('returns the prev state when the dispatched action type is not specified in reducer config', () => {});
-    it.skip('returns the correct state when typeof the initial state is a number', () => {});
-    it.skip('returns the correct state when typeof the initial state is an object', () => {});
-    it.skip('returns the correct state when the typeof the initial state is an array', () => {});
-  });
-});
+    it('returns the inital state when prev state is undefined', () => {
+      // We'll just use one state type
+      const initState = { foobar: 3 };
+      const reducerConfig = [
+        prevState => prevState,
+      ];
 
-describe('returns the correct merged state when given a list of reducers', () => {
-  const fooReducer = (prevState, action) => {
-    const { payload: { foo } = {} } = action;
+      const reducer = combineSubReducers(initState, reducerConfig);
+      const result = reducer(undefined, { type: '@@test' });
 
-    switch (action.type) {
-    case mockAction.type:
-      return {
-        ...prevState,
-        foo: foo || prevState.foo,
-      };
+      expect(result).toBeObject();
+      expect(result).toStrictEqual(initState);
+    });
 
-    default:
-      return prevState;
-    }
-  };
+    it('returns the prev state when the dispatched action type is not specified in reducer config', () => {
+      const initState = 0;
+      const reducerConfig = [
+        (prevState, action) => {
+          switch (action.type) {
+          case 'NOT.THE.ONE': return 999;
+          default: return prevState;
+          }
+        },
+      ];
 
-  const barReducer = (prevState, action) => {
-    const { payload: { bar } = {} } = action;
+      const reducer = combineSubReducers(initState, reducerConfig);
+      const result = reducer(initState, { type: 'SOME.ACTION.TYPE' });
 
-    switch (action.type) {
-    case mockAction.type:
-      return {
-        ...prevState,
-        bar: bar || prevState.bar,
-      };
+      expect(result).toBeNumber();
+      expect(result).toStrictEqual(initState);
+    });
 
-    default:
-      return prevState;
-    }
-  };
+    it('returns the correct state when typeof initialState == number and a single reducer', () => {
+      const initState = 0;
+      const expectedResult = 999;
+      const reducerConfig = [
+        (prevState, action) => {
+          switch (action.type) {
+          case 'SOME.ACTION.TYPE': return expectedResult;
+          default: return prevState;
+          }
+        },
+      ];
 
-  it('and a single reducer is triggered', () => {
-    const initState = { foo: 1, bar: 'baz' };
-    const mockAction = { type: 'test.action', payload: { foo: 4 } };
-    const expectedState = { foo: 4, bar: 'baz' };
+      const reducer = combineSubReducers(initState, reducerConfig);
+      const result = reducer(initState, { type: 'SOME.ACTION.TYPE' });
 
-    const reducer = combineSubReducers(initState, [
-      fooReducer,
-      barReducer,
-    ]);
+      expect(result).toBeNumber();
+      expect(result).toStrictEqual(expectedResult);
+    });
 
-    const newState = reducer(initState, mockAction);
+    it('returns the correct state when typeof initialState == object and a single reducer', () => {
+      const initState = { foo: 0 };
+      const expectedResult = { foo: 999 };
+      const reducerConfig = [
+        (prevState, action) => {
+          switch (action.type) {
+          case 'SOME.ACTION.TYPE': return expectedResult;
+          default: return prevState;
+          }
+        },
+      ];
 
-    expect(newState).toBeObject();
-    expect(newState).toStrictEqual(expectedState);
-  });
+      const reducer = combineSubReducers(initState, reducerConfig);
+      const result = reducer(initState, { type: 'SOME.ACTION.TYPE' });
 
-  it('and multiple reducers are triggered', () => {
-    const initState = { foo: 1, bar: 'baz' };
-    const mockAction = { type: 'test.action', payload: { foo: 10, baz: 'world' } };
-    const expectedState = { foo: 10, bar: 'world' };
+      expect(result).toBeObject();
+      expect(result).toStrictEqual(expectedResult);
+    });
 
-    const reducer = combineSubReducers(initState, [
-      fooReducer,
-      barReducer,
-    ]);
+    it('returns the correct state when the typeof initialState == array and a single reducer', () => {
+      const initState = [1, 2, 3];
+      const expectedResult = [4, 5, 6];
+      const reducerConfig = [
+        (prevState, action) => {
+          switch (action.type) {
+          case 'SOME.ACTION.TYPE': return expectedResult;
+          default: return prevState;
+          }
+        },
+      ];
 
-    const newState = reducer(initState, mockAction);
+      const reducer = combineSubReducers(initState, reducerConfig);
+      const result = reducer(initState, { type: 'SOME.ACTION.TYPE' });
 
-    expect(newState).toBeObject();
-    expect(newState).toStrictEqual(expectedState);
+      expect(result).toBeArray();
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it('returns the new state when there are more than one applying reducer', () => {
+      const initState = [1, 2, 3];
+      const expectedResult = [4, 5, 6, 7, 8, 9];
+      const reducerConfig = [
+        (prevState, action) => {
+          switch (action.type) {
+          case 'SOME.ACTION.TYPE': return [4, 5, 6];
+          default: return prevState;
+          }
+        },
+        (prevState, action) => {
+          switch (action.type) {
+          case 'SOME.ACTION.TYPE': return prevState.concat([7, 8, 9]);
+          default: return prevState;
+          }
+        },
+      ];
+
+      const reducer = combineSubReducers(initState, reducerConfig);
+      const result = reducer(initState, { type: 'SOME.ACTION.TYPE' });
+
+      expect(result).toBeArray();
+      expect(result).toStrictEqual(expectedResult);
+    });
   });
 });
