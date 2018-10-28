@@ -6,10 +6,6 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: {
     bundle: './src/index.js',
-    withPolyfills: [
-      './src/polyfills.js',
-      './src/index.js'
-    ]
   },
   module: {
     rules: [
