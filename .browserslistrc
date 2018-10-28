@@ -1,8 +1,6 @@
-# Use Browserslist defaults:
-# see https://www.npmjs.com/package/browserslist
+# Set our target browsers, based on market
+# share and currently supported.
 #
-# Note this isn't yet supported by BabelJS yet. It has to be inside
-# the .babelrc file.
-#
-# @see: ?
-defaults
+> 1%
+IE 11
+not dead

@@ -1,4 +1,6 @@
 // @flow
+import '@babel/polyfill';
+
 /**
  * @todo Fix linting with SemiStandardJS as it should pull Flowtypes in automatically...
  * @see https://github.com/standard/standard/issues/1045
