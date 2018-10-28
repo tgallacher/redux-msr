@@ -1,7 +1,7 @@
 {
   "name": "redux-msr",
   "version": "0.2.0",
-  "description": "Merge resource sub reducers wihtout slicing the Redux state",
+  "description": "Merge resource sub reducers without slicing the Redux store",
   "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --config ./webpack.prod.js",
