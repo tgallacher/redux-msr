@@ -10,7 +10,7 @@
     "test:dev": "npm run-script test -- --watch",
     "flow": "flow check",
     "flow:install": "flow-typed install",
-    "lint": "semistandard --verbose | snazzy",
+    "lint": "eslint --config .eslintrc src/**/*.js",
     "lint:fix": "semistandard --fix",
     "preversion": "npm run lint && npm test",
     "prepublishOnly": "npm run preversion && npm run build"
@@ -23,7 +23,7 @@
     "type": "git",
     "url": "https://github.com/tgallacher/redux-msr.git"
   },
-  "author": "Tom Gallacher <thomas.gallacher@gmail.com>",
+  "author": "Tom Gallacher <tgallacher@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -36,35 +36,25 @@
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "clean-webpack-plugin": "^0.1.19",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^3.1.0",
+    "flow-bin": "^0.80.0",
     "eslint": "^5.8.0",
     "eslint-plugin-flowtype": "^2.50.3",
-    "flow-bin": "^0.75.0",
     "flow-typed": "^2.5.1",
     "jest": "^23.6.0",
     "jest-extended": "^0.11.0",
-    "semistandard": "^12.0.1",
     "snazzy": "^7.1.1",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
     "webpack-merge": "^4.1.4"
   },
-  "dependencies": {},
-  "semistandard": {
-    "parser": "babel-eslint",
-    "env": {
-      "browser": true,
-      "node": true,
-      "jest": true
-    },
-    "ignore": [
-      "flow-typed",
-      "flowtypes.js"
-    ],
-    "plugins": [
-      "flowtype"
-    ],
-    "extends": [
-      "plugin:flowtype/recommended"
-    ]
-  }
+  "peerDependencies": {
+    "redux": "^4.0.0"
+  },
+  "dependencies": {}
 }

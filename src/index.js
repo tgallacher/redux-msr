@@ -1,33 +1,22 @@
 // @flow
-import '@babel/polyfill';
-
-/**
- * @todo Fix linting with SemiStandardJS as it should pull Flowtypes in automatically...
- * @see https://github.com/standard/standard/issues/1045
- * */
-/* global ActionConfig, FluxStandardAction */
+import handleReducerArray from './handleReducerArray';
+import handleReducerObject from './handleReducerObject';
 
 /**
  * Main library entrypoint.
  * Combine several sub-reducers to construct a single resource
  * reducer. Each sub reducer will receive the same full Redux store
- * slice as the resulting main reducer. This is unlike the behaviour and
- * intention of Redux's `combineReducers` API method.
+ * slice as the resulting main reducer.
  *
  * @param {any} initialState The initial state to return
- * @param {ActionConfig} config Action type & reducer configuration object
+ * @param {ReducerConfig} reducerConfig Action type & reducer configuration object
  */
-const mergeSubReducers = (initialState: any, actionConfig: ActionConfig) => (prevState: ?Object, action: FluxStandardAction): any => {
-  if ('default' in actionConfig) {
-    return actionConfig['default'] || initialState;
-  } else if (!(action.type in actionConfig)) {
-    return prevState || initialState;
-  }
-
-  return (typeof actionConfig[action.type] === 'function')
-    ? actionConfig[action.type](prevState, action)
-    : actionConfig[action.type];
-};
+export const mergeSubReducers = <T>(initialState: T, reducerConfig: ReducerConfig<T>) =>
+  (prevState: ?T, action: FluxStandardAction): T => { // eslint-disable-line
+    return Array.isArray(reducerConfig)
+      ? handleReducerArray(initialState, reducerConfig, prevState, action)
+      : handleReducerObject(initialState, reducerConfig, prevState, action);
+  };
 
 /**
  * Helper method to return the previous reducer state.
@@ -36,8 +25,6 @@ const mergeSubReducers = (initialState: any, actionConfig: ActionConfig) => (pre
  *
  * @param {T} prevState The previous reducer state
  */
-const returnPrevState = <T>(prevState: T): T => prevState;
+export const returnPrevState = <T>(prevState: T): T => prevState;
 
-module.exports = mergeSubReducers;
-module.exports.mergeSubReducers = mergeSubReducers;
-module.exports.returnPrevState = returnPrevState;
+export default mergeSubReducers;

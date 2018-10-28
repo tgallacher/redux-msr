@@ -1,5 +1,5 @@
-// flow-typed signature: 4cacceffd326bb118e4a3c1b4d629e98
-// flow-typed version: e737b9832f/jest_v23.x.x/flow_>=v0.39.x
+// flow-typed signature: 268d738ecf65f4bcc4a5455efa90619f
+// flow-typed version: 0e8507a159/jest_v23.x.x/flow_>=v0.39.x
 
 type JestMockFn<TArguments: $ReadOnlyArray<*>, TReturn> = {
   (...args: TArguments): TReturn,
@@ -17,7 +17,12 @@ type JestMockFn<TArguments: $ReadOnlyArray<*>, TReturn> = {
      * An array that contains all the object instances that have been
      * instantiated from this mock function.
      */
-    instances: Array<TReturn>
+    instances: Array<TReturn>,
+    /**
+     * An array that contains all the object results that have been
+     * returned by this mock function call
+     */
+    results: Array<{ isThrow: boolean, value: TReturn }>
   },
   /**
    * Resets all information stored in the mockFn.mock.calls and
@@ -65,14 +70,14 @@ type JestMockFn<TArguments: $ReadOnlyArray<*>, TReturn> = {
    */
   mockReturnThis(): void,
   /**
-   * Deprecated: use jest.fn(() => value) instead
+   * Accepts a value that will be returned whenever the mock function is called.
    */
   mockReturnValue(value: TReturn): JestMockFn<TArguments, TReturn>,
   /**
    * Sugar for only returning a value once inside your mock
    */
   mockReturnValueOnce(value: TReturn): JestMockFn<TArguments, TReturn>,
-  /** 
+  /**
    * Sugar for jest.fn().mockImplementation(() => Promise.resolve(value))
    */
   mockResolvedValue(value: TReturn): JestMockFn<TArguments, Promise<TReturn>>,
@@ -119,7 +124,9 @@ type JestMatcherResult = {
   pass: boolean
 };
 
-type JestMatcher = (actual: any, expected: any) => JestMatcherResult;
+type JestMatcher = (actual: any, expected: any) =>
+  | JestMatcherResult
+  | Promise<JestMatcherResult>;
 
 type JestPromiseType = {
   /**
@@ -139,6 +146,30 @@ type JestPromiseType = {
  * describe()
  */
 type JestTestName = string | Function;
+
+/**
+ *  Plugin: jest-styled-components
+ */
+
+type JestStyledComponentsMatcherValue =
+  | string
+  | JestAsymmetricEqualityType
+  | RegExp
+  | typeof undefined;
+
+type JestStyledComponentsMatcherOptions = {
+  media?: string;
+  modifier?: string;
+  supports?: string;
+}
+
+type JestStyledComponentsMatchersType = {
+  toHaveStyleRule(
+    property: string,
+    value: JestStyledComponentsMatcherValue,
+    options?: JestStyledComponentsMatcherOptions
+  ): void,
+};
 
 /**
  *  Plugin: jest-enzyme
@@ -500,7 +531,13 @@ type JestExtendedMatchersType = {
 };
 
 interface JestExpectType {
-  not: JestExpectType & EnzymeMatchersType & DomTestingLibraryType & JestJQueryMatchersType & JestExtendedMatchersType,
+  not:
+    & JestExpectType
+    & EnzymeMatchersType
+    & DomTestingLibraryType
+    & JestJQueryMatchersType
+    & JestStyledComponentsMatchersType
+    & JestExtendedMatchersType,
   /**
    * If you have a mock function, you can use .lastCalledWith to test what
    * arguments it was last called with.
@@ -664,6 +701,9 @@ interface JestExpectType {
    * This ensures that an Object matches the most recent snapshot.
    */
   toMatchSnapshot(name: string): void,
+
+  toMatchInlineSnapshot(snapshot?: string): void,
+  toMatchInlineSnapshot(propertyMatchers?: {[key: string]: JestAsymmetricEqualityType}, snapshot?: string): void,
   /**
    * Use .toThrow to test that a function throws when it is called.
    * If you want to test that a specific error gets thrown, you can provide an
@@ -678,7 +718,8 @@ interface JestExpectType {
    * Use .toThrowErrorMatchingSnapshot to test that a function throws a error
    * matching the most recent snapshot when it is called.
    */
-  toThrowErrorMatchingSnapshot(): void
+  toThrowErrorMatchingSnapshot(): void,
+  toThrowErrorMatchingInlineSnapshot(snapshot?: string): void,
 }
 
 type JestObjectType = {
@@ -880,7 +921,19 @@ declare var describe: {
   /**
    * Skip running this describe block
    */
-  skip(name: JestTestName, fn: () => void): void
+  skip(name: JestTestName, fn: () => void): void,
+
+  /**
+   * each runs this test against array of argument arrays per each run
+   *
+   * @param {table} table of Test
+   */
+  each(
+    table: Array<Array<mixed> | mixed>
+  ): (
+    name: JestTestName,
+    fn?: (...args: Array<any>) => ?Promise<mixed>
+  ) => void,
 };
 
 /** An individual test unit */
@@ -898,6 +951,17 @@ declare var it: {
     timeout?: number
   ): void,
   /**
+   * each runs this test against array of argument arrays per each run
+   *
+   * @param {table} table of Test
+   */
+  each(
+    table: Array<Array<mixed> | mixed>
+  ): (
+    name: JestTestName,
+    fn?: (...args: Array<any>) => ?Promise<mixed>
+  ) => void,
+  /**
    * Only run this test
    *
    * @param {JestTestName} Name of Test
@@ -908,7 +972,14 @@ declare var it: {
     name: JestTestName,
     fn?: (done: () => void) => ?Promise<mixed>,
     timeout?: number
-  ): void,
+  ): {
+    each(
+      table: Array<Array<mixed> | mixed>
+    ): (
+      name: JestTestName,
+      fn?: (...args: Array<any>) => ?Promise<mixed>
+    ) => void,
+  },
   /**
    * Skip running this test
    *
@@ -932,7 +1003,18 @@ declare var it: {
     name: JestTestName,
     fn?: (done: () => void) => ?Promise<mixed>,
     timeout?: number
-  ): void
+  ): void,
+  /**
+   * each runs this test against array of argument arrays per each run
+   *
+   * @param {table} table of Test
+   */
+  each(
+    table: Array<Array<mixed> | mixed>
+  ): (
+    name: JestTestName,
+    fn?: (...args: Array<any>) => ?Promise<mixed>
+  ) => void,
 };
 declare function fit(
   name: JestTestName,
@@ -999,7 +1081,15 @@ type JestPrettyFormatPlugins = Array<JestPrettyFormatPlugin>;
 /** The expect function is used every time you want to test a value */
 declare var expect: {
   /** The object that you want to make assertions against */
-  (value: any): JestExpectType & JestPromiseType & EnzymeMatchersType & DomTestingLibraryType & JestJQueryMatchersType & JestExtendedMatchersType,
+  (value: any):
+    & JestExpectType
+    & JestPromiseType
+    & EnzymeMatchersType
+    & DomTestingLibraryType
+    & JestJQueryMatchersType
+    & JestStyledComponentsMatchersType
+    & JestExtendedMatchersType,
+
   /** Add additional Jasmine matchers to Jest's roster */
   extend(matchers: { [name: string]: JestMatcher }): void,
   /** Add a module that formats application-specific data structures. */
