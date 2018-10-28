@@ -51,12 +51,11 @@
   "dependencies": {},
   "semistandard": {
     "parser": "babel-eslint",
-    "globals": [
-      "jest",
-      "it",
-      "expect",
-      "describe"
-    ],
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true
+    },
     "ignore": [
       "flow-typed",
       "flowtypes.js"
