@@ -13,6 +13,7 @@ describe('Reducer config is', () => {
       expect(result).toStrictEqual(initState);
     });
 
+    // eslint-disable-next-line
     it('supports a "default" action type which returns the provided value when no other action types are matched for the given dispatched action', () => {
       const initState = { foobar: 3 };
       const actionConfig = {
