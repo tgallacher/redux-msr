@@ -1,4 +1,5 @@
 // @flow
+import '@babel/polyfill';
 
 const handleReducerArray = <T>(
   initialState: T,
@@ -29,6 +30,7 @@ const handleReducerObject = <T>(
     ? reducerConfig[action.type](prevState, action)
     : reducerConfig[action.type];
 };
+
 
 /**
  * Main library entrypoint.
