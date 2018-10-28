@@ -1,35 +1,6 @@
 // @flow
-
-const handleReducerArray = <T>(
-  initialState: T,
-  reducerConfig: ReducerArrayConfig<T>,
-  prevState: ?T,
-  action: FluxStandardAction,
-): T => reducerConfig.reduce(
-    (newState, reducer) => reducer(newState, action),
-    prevState || initialState,
-  );
-
-// eslint-disable-next-line
-const handleReducerObject = <T>(
-  initialState: T,
-  reducerConfig: ReducerObjectConfig<T>,
-  prevState: ?T,
-  action: FluxStandardAction,
-): T => {
-  if ('default' in reducerConfig) {
-    return reducerConfig.default || initialState;
-  }
-
-  if (! (action.type in reducerConfig)) {
-    return prevState || initialState;
-  }
-
-  return (typeof reducerConfig[action.type] === 'function')
-    ? reducerConfig[action.type](prevState, action)
-    : reducerConfig[action.type];
-};
-
+import handleReducerArray from './handleReducerArray';
+import handleReducerObject from './handleReducerObject';
 
 /**
  * Main library entrypoint.
