@@ -40,7 +40,7 @@ const handleReducerObject = <T>(
  * @param {any} initialState The initial state to return
  * @param {ReducerConfig} reducerConfig Action type & reducer configuration object
  */
-export const mergeSubReducers = <T>(initialState: T, reducerConfig: ReducerObjectConfig<T>) =>
+export const mergeSubReducers = <T>(initialState: T, reducerConfig: ReducerConfig<T>) =>
   (prevState: ?T, action: FluxStandardAction): T => { // eslint-disable-line
     return Array.isArray(reducerConfig)
       ? handleReducerArray(initialState, reducerConfig, prevState, action)
