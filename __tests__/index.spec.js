@@ -48,7 +48,7 @@ describe('Reducer config is', () => {
       const reducer = combineSubReducers(initState, actionConfig);
       const result = reducer(initState, { type: actionType });
 
-      expect(result).toBeObject();
+      expect(result).toBeArray();
       expect(result).toStrictEqual(actionConfig[actionType]);
     });
 
