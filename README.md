@@ -4,7 +4,7 @@ Merge sub-reducers (MSR) while sharing the same Redux store (or sub-state compon
 
 **Table of Contents**
 
-<!-- TOC depthFrom:2 -->
+<!-- TOC depthFrom:2 depthTo:3 -->
 
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
@@ -12,6 +12,9 @@ Merge sub-reducers (MSR) while sharing the same Redux store (or sub-state compon
 - [API](#api)
   - [`combineSubReducers<T>(defaultState: T, reducerConfig: ReducerConfig) => Reducer<T>`](#combinesubreducerstdefaultstate-t-reducerconfig-reducerconfig--reducert)
   - [`returnPrevState<T>(prevState: T) => T`](#returnprevstatetprevstate-t--t)
+- [Examples](#examples)
+  - [reducerConfig: Object type](#reducerconfig-object-type)
+  - [reducerConfig: Array type](#reducerconfig-array-type)
 
 <!-- /TOC -->
 
@@ -108,29 +111,30 @@ The default state to use when the Redux store is initialised
 
 **reducerConfig**
 
-This can either an `Array` or an `Object`.
+This can either be an `Array` or an `Object`.
 
-When an `Array`, the array should be an array of Redux reducer functions (type: Reducer). Each reducer in the array will be triggered for all `action.type`'s and will be each passed the previous state in sequential order. The result returned by each reducer will be passed to the subsequent in the array, with the final state returned by the array being passed back to the Redux store.
+When an `Array`, the array should be an array of Redux reducer functions (type: [Reducer](https://github.com/reduxjs/redux/blob/master/index.d.ts)). Each reducer in the array will be triggered for all `action.type`'s and will be each passed the previous state in sequential order. The result returned by each reducer will be passed to the subsequent in the array, with the final state returned by the array being passed back to the Redux store.
 
 When an `Object`, the object key-value pairs should correspond to the action type and corresponding value to return for that action type, respectively. If the return value is a function, then this will be called with the standard Redux reducer parameters, namely `Reducer` ([see Redux typing](https://github.com/reduxjs/redux/blob/master/index.d.ts)).
 
 The reducer returned by this module will return the previous state unless a specific action type is noted, and a subsequent value or function is supplied in order to change what the new (immutable) state should be. If you need to overwrite the `default` response of the resulting reducer, i.e. if no action-types match the currently dispatched action, then simply add the required value/function to the `default` key within the `reducerConfig` object. For example,
 
+```js
+export default combineSubReducers(defaultState, {
+  default: myDefaultReducer
+});
+```
+
 ### `returnPrevState<T>(prevState: T) => T`
 
 A simply utility that can be used to force a simple *short circuit* and return the previous state. This can be particularly useful when the `reducerConfig`  is the `Object` variant, and for a given `action.type` you would like to return the previous state, e.g. during a dispatched error.
 
-<!-- ```js
-export default combineSubReducers(defaultState, {
-  default: myDefaultReducer
-});
-``` -->
 
 ## Examples
 
-These are just a small set of examples of what is possible.
+These are just a small set of examples of what is possible. This package can be used on its own for a single Redux store, or one that has been subdivided into smaller store *slices* using Redux's [combineReducers()](https://redux.js.org/api-reference/combinereducers) API, as mentioned above.
 
-### Object type, reducerConfig
+### reducerConfig: Object type
 #### 1. Return basic primitive types for a given action type:
 
 ```js
@@ -179,7 +183,26 @@ export default combinSubReducers(defaultState, {
 
 Here, both `handleType1Reducer` and `handleType2Reducer` have the `Reducer` type signature (see [here](https://github.com/reduxjs/redux/blob/master/index.d.ts)).
 
-### Array type, reducerConfig
+#### 3. A combination
+
+```js
+// reducer.js
+import combineSubReducers from 'redux-msr';
+
+import handleType1Reducer from './reducers/reducer1';
+import handleType2Reducer from './reducers/reducer2';
+
+// State is a Number
+const defaultState = 0;
+
+export default combinSubReducers(defaultState, {
+  'EXAMPLE.ACTION.TYPE.1': handleType1Reducer,
+  'EXAMPLE.ACTION.TYPE.2': handleType2Reducer,
+  'EXAMPLE.ACTION.TYPE.3': 10,
+});
+```
+
+### reducerConfig: Array type
 
 ```js
 // reducer.js
@@ -190,7 +213,7 @@ import reducerA from '/some/other/part/of/codebase';
 // Assume our state is a simple number
 const defaultState = 0;
 
-// Mocked reducer to handle
+// Mocked reducer
 const reducerB = (prevState: number = defaultState, action: Action) => {
   switch(action.type){
     case 'foo':
@@ -201,7 +224,7 @@ const reducerB = (prevState: number = defaultState, action: Action) => {
 };
 
 /**
- * Remember: the order of the reducers in the array matter
+ * Remember: the order of the reducers in the array matter!
  *
  * State is passed to the first reducer, here `reducerA`; the state returned
  * from reducerA is then passed to `reducerB`; the state returned from reducerB
