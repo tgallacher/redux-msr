@@ -1,5 +1,4 @@
 // @flow
-import '@babel/polyfill';
 
 const handleReducerArray = <T>(
   initialState: T,
