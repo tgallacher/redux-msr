@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.prod.js",
     "build:dev": "webpack --config ./webpack.dev.js",
-    "test": "jest",
+    "test": "jest --config ./.jest.config.js",
     "test:dev": "npm run-script test -- --watch",
     "flow": "flow check",
     "flow:install": "flow-typed install",
@@ -49,9 +49,6 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {},
-  "jest": {
-    "setupTestFrameworkScriptFile": "jest-extended"
-  },
   "semistandard": {
     "parser": "babel-eslint",
     "globals": [
