@@ -1,6 +1,7 @@
 # Redux MSR
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square&logo=Github)](http://makeapullrequest.com) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://github.com/tgallacher/redux-msr/graphs/commit-activity) ![NPM version](https://img.shields.io/npm/v/redux-msr.svg?style=flat) [![install size](https://packagephobia.now.sh/badge?p=redux-msr@0.2.0)](https://packagephobia.now.sh/result?p=redux-msr@0.2.0) ![Minified size](https://img.shields.io/bundlephobia/min/redux-msr.svg?style=flat) ![NPM license](https://img.shields.io/npm/l/redux-msr.svg?style=flat) [![Build Status](https://travis-ci.com/tgallacher/redux-msr.svg?branch=master)](https://travis-ci.com/tgallacher/redux-msr)
+[![Coverage Status](https://coveralls.io/repos/github/tgallacher/redux-msr/badge.svg?branch=master)](https://coveralls.io/github/tgallacher/redux-msr?branch=master)
 
 Merge sub-reducers (MSR) while sharing the same Redux store (or sub-state component), enabling scalable reducer code management and reuse.
 
