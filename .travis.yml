@@ -14,3 +14,9 @@ install: npm ci
 script:
   - npm run lint
   - npm run test:with-coverage
+
+# Will still run for PRs if configured
+# in TravisCI UI options.
+branches:
+  only:
+    - master
