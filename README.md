@@ -7,17 +7,13 @@ Merge sub-reducers (MSR) while sharing the same Redux store (or sub-state compon
 
 **Table of Contents**
 
-<!-- TOC depthFrom:2 depthTo:3 -->
+<!-- TOC depthFrom:2 depthTo:2 -->
 
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
 - [Installation](#installation)
 - [API](#api)
-  - [`combineSubReducers<T>(defaultState: T, reducerConfig: ReducerConfig) => Reducer<T>`](#combinesubreducerstdefaultstate-t-reducerconfig-reducerconfig--reducert)
-  - [`returnPrevState<T>(prevState: T) => T`](#returnprevstatetprevstate-t--t)
 - [Examples](#examples)
-  - [reducerConfig: Object type](#reducerconfig-object-type)
-  - [reducerConfig: Array type](#reducerconfig-array-type)
 
 <!-- /TOC -->
 
